@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  #finance-control {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .input-section {
+    border: 2px solid rgb(52, 50, 50);
+    text-align: left;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  #total {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  #transactions {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .transaction {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 10px 0;
+    gap: 15px;
+  }
+  
+  button.delete {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  select#transaction-type {
+    height: 32px;
+}
+
+button#add-transaction {
+    height: 32px;
+}
+ 

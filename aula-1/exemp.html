@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div>
+        <h1>Controle de Finanças</h1>
+        <div id="finance-control">
+          <div class="input-section">
+            <label for="entry">Entrada:</label>
+            <input type="number" id="entry" placeholder="Valor para poupar">
+          </div>
+          <div class="input-section">
+            <label for="expenses">Saída (Despesas):</label>
+            <input type="number" id="expenses" placeholder="Suas despesas">
+          </div>
+          <div id="total">
+            <p>Valor Total: R$ <span id="total-amount">0.00</span></p>
+          </div>
+        </div>
+        <div id="transactions">
+          <h2>Transações</h2>
+          <div class="transaction">
+            <input type="text" id="description" placeholder="Descrição">
+            <input type="number" id="item-value" placeholder="Valor em Euro">
+            <select id="transaction-type">
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </select>
+            <button id="add-transaction">Adicionar Transação</button>
+          </div>
+          <h3>Descrição</h3>
+          <h3>Valor (Euro)</h3>
+          <h3>Tipo</h3>
+          <ul id="transaction-list"></ul>
+        </div>
+  </body>
+    
+    </div>
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+  const entryInput = document.getElementById("entry");
+  const expensesInput = document.getElementById("expenses");
+  const totalAmount = document.getElementById("total-amount");
+
+  const descriptionInput = document.getElementById("description");
+  const itemValueInput = document.getElementById("item-value");
+  const transactionTypeSelect = document.getElementById("transaction-type");
+  const addTransactionButton = document.getElementById("add-transaction");
+  const transactionList = document.getElementById("transaction-list");
+
+  entryInput.addEventListener("input", updateTotal);
+  expensesInput.addEventListener("input", updateTotal);
+  addTransactionButton.addEventListener("click", addTransaction);
+
+  function updateTotal() {
+    const entryValue = parseFloat(entryInput.value) || 0;
+    const expensesValue = parseFloat(expensesInput.value) || 0;
+    const total = entryValue - expensesValue;
+    totalAmount.textContent = total.toFixed(2);
+  }
+
+  function addTransaction() {
+    const description = descriptionInput.value;
+    const value = parseFloat(itemValueInput.value) || 0;
+    const type = transactionTypeSelect.value;
+
+    if (description !== "" && value !== 0) {
+      const transactionItem = document.createElement("li");
+      transactionItem.innerHTML = `
+        <span>${description}</span>
+        <span>${value.toFixed(2)} &#8364;</span>
+        <span>${type === "entrada" ? "↑" : "↓"}</span>
+        <button class="delete">🗑️</button>
+      `;
+      transactionList.appendChild(transactionItem);
+
+      // Atualizar os valores totais com base na nova transação
+      if (type === "entrada") {
+        entryInput.value = parseFloat(entryInput.value) + value;
+      } else {
+        expensesInput.value = parseFloat(expensesInput.value) + value;
+      }
+
+      updateTotal();
+
+      // Limpar os campos de entrada
+      descriptionInput.value = "";
+      itemValueInput.value = "";
+    }
+
+    // Adicionar funcionalidade de exclusão
+    const deleteButtons = document.querySelectorAll(".delete");
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const parentElement = button.parentElement;
+        const transactionValue = parseFloat(
+          parentElement.querySelector("span").textContent
+        );
+        const transactionType = parentElement.querySelector("span:nth-child(3)")
+          .textContent;
+        if (transactionType === "↑") {
+          entryInput.value = parseFloat(entryInput.value) - transactionValue;
+        } else {
+          expensesInput.value = parseFloat(expensesInput.value) - transactionValue;
+        }
+        parentElement.remove();
+        updateTotal();
+      });
+    });
+  }
+});
+
+
+    </script>
+</body>
+</html>
